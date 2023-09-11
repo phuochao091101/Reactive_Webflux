@@ -28,14 +28,36 @@ public class FluxAndMonoService {
     public Flux<String> fruitsFluxFilterMap(int number) {
         return Flux.fromIterable(List.of("Mango","Orange","Banana"))
                 .filter(s -> s.length() > number)
-                .map(String::toUpperCase);
+                .map(String::toUpperCase); // filter action, doing action and one by one
     }
+
+    public Flux<String> fruitsFluxFlatMap() {
+        return Flux.fromIterable(List.of("Mango","Orange","Banana"))
+                .flatMap(s -> Flux.just(s.split("")))
+                .log(); //like map, but it chance thread to another thread and can combine with another thread
+    }
+
     public Flux<String> fruitsFluxFlatMapAsync() {
         return Flux.fromIterable(List.of("Mango","Orange","Banana"))
                 .flatMap(s -> Flux.just(s.split(""))
                         .delayElements(Duration.ofMillis(
                                 new Random().nextInt(1000)
                         )))
+                .log(); // doing action and run async
+    }
+
+    public Flux<String> fruitsFluxConcatMap() {
+        return Flux.fromIterable(List.of("Mango","Orange","Banana"))
+                .concatMap(s -> Flux.just(s.split(""))
+                        .delayElements(Duration.ofMillis(
+                                new Random().nextInt(1000)
+                        )))
+                .log();
+    }
+
+    public Mono<List<String>> fruitMonoFlatMap() {
+        return Mono.just("Mango")
+                .flatMap(s -> Mono.just(List.of(s.split(""))))
                 .log();
     }
 

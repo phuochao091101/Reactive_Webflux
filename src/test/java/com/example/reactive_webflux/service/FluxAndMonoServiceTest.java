@@ -41,10 +41,37 @@ class FluxAndMonoServiceTest {
                 .verifyComplete();
     }
     @Test
+    void fruitsFluxFlatMap() {
+        var fruitsFlux = fluxAndMonoService.fruitsFluxFlatMap();
+
+        StepVerifier.create(fruitsFlux)
+                .expectNextCount(17)
+                .verifyComplete();
+    }
+    @Test
     void fruitsFluxFlatMapAsync() {
         var fruitsFlux = fluxAndMonoService.fruitsFluxFlatMapAsync();
         StepVerifier.create(fruitsFlux)
                 .expectNextCount(17)
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitsFluxConcatMap() {
+
+        var fruitsFlux = fluxAndMonoService.fruitsFluxConcatMap();
+
+        StepVerifier.create(fruitsFlux)
+                .expectNextCount(17)
+                .verifyComplete();
+    }
+
+    @Test
+    void fruitMonoFlatMap() {
+        var fruitsFlux = fluxAndMonoService.fruitMonoFlatMap();
+
+        StepVerifier.create(fruitsFlux)
+                .expectNextCount(1)
                 .verifyComplete();
     }
 }
